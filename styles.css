@@ -1,0 +1,91 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+.navbar {
+    height: 80px;
+    font-family: 'Montserrat', sans-serif;
+}
+#map {
+    position: absolute;
+    top: 80px; /* Comienza justo debajo del header */
+    bottom: 0;
+    left: 250px; /* Ajusta según el ancho del sidebar */
+    width: calc(100vw - 250px); /* Ajusta el ancho del mapa */
+    height: calc(100vh - 80px); /* Ajusta la altura del mapa */
+    z-index: 999;
+    font-family: 'Montserrat', sans-serif;
+}
+/* ------------------------------------------------------------------ */
+.flex-shrink-0 {
+    width: 250px;
+}
+#sidebar-title {
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    text-align: left;
+}
+#menu-title {
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+}
+#menu-subtitle {
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    line-height: 30px;
+}
+
+/* Animación de rotación en el ícono del menú */
+.bi-caret-right-fill {
+    transition: transform 0.3s ease; /* Transición suave */
+    margin-right: 20px;
+}
+/* Rotación cuando el botón está activo */
+.btn-toggle[aria-expanded="true"] .bi-caret-right-fill {
+    transform: rotate(90deg); /* Rota 90 grados */
+}
+.btn-toggle-nav {
+    text-align: right;
+    font-size: 12px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Cambiar el color del ícono y el texto cuando el botón está activo */
+.btn-toggle.active .bi,
+.btn-toggle.active {
+    color: rgb(245, 81, 81); /* Cambia el color del ícono */
+    transition: color 0.3s ease; /* Transición color del ícono */
+}
+.btn-toggle-nav a.active {
+    color: rgb(245, 81, 81); /* Cambia el color del texto */
+    font-weight: bold; /* Hace el texto más grueso */
+}
+#geocoder {
+    z-index: 1000;
+}
+
+
+
+
+
+.mapboxgl-popup {
+    font-family: 'Montserrat', sans-serif;
+    max-width: 300px;
+    color: black;
+}
+
+.mapboxgl-popup h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.mapboxgl-popup p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
