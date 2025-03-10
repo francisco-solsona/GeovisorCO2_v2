@@ -45,9 +45,9 @@ geocoder.on('clear', () => {
 map.on('style.load', () => {
     map.setFog({});
     // Cargar las capas
-    // loadGeoTIFF().then(() => {
-    //     addCustomLayers();
-    // });
+    loadGeoTIFF().then(() => {
+        addCustomLayers();
+    });
 });
 
 ////////////////////////////////////////////////////////////////////////////
