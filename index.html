@@ -76,10 +76,10 @@
                     
                 </button>
                 <div class="collapse show" id="home-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" id="menu-subtitle">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">¿Cómo usar?</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">¿Quienes somos?</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Información importante</a></li>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small menu-subtitle" >
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style="margin-bottom: 5%; margin-top: 5%;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-how-to" aria-controls="offcanvasScrolling">¿Cómo usar?</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style="margin-bottom: 5%;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-who" aria-controls="offcanvasScrolling">¿Quienes somos?</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style="margin-bottom: 5%;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-important" aria-controls="offcanvasScrolling">Información importante</a></li>
                     </ul>
                 </div>
             </li>
@@ -92,9 +92,9 @@
                     Comparar
                 </button>
                 <div class="collapse" id="compare-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" id="menu-subtitle">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Punto</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Radio</a></li>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small menu-subtitle" >
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style="margin-bottom: 5%; margin-top: 5%;">Punto</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style="margin-bottom: 5%;">Radio</a></li>
                     </ul>
                 </div>
             </li>
@@ -113,11 +113,11 @@
                     Agregar capas
                 </button>
                 <div class="collapse" id="orders-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" id="menu-subtitle">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" data-layer="dqro">Distrito QRO</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" data-layer="anp">Áreas Naturales Protegidas</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" data-layer="poel">Ordenamiento Ecológico Local</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" data-layer="poereq">Ordenamiento Ecológico Regional</a></li>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small menu-subtitle" >
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style="margin-bottom: 5%; margin-top: 5%;" data-layer="dqro" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-dqro" aria-controls="offcanvasScrolling">Distrito QRO</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style="margin-bottom: 5%;" data-layer="anp" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-anp" aria-controls="offcanvasScrolling">Áreas Naturales Protegidas</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style="margin-bottom: 5%;" data-layer="poel" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-poel" aria-controls="offcanvasScrolling">Ordenamiento Ecológico Local</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style="margin-bottom: 5%;" data-layer="poereq" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-poereq" aria-controls="offcanvasScrolling">Ordenamiento Ecológico Regional</a></li>
                     </ul>
                 </div>
             </li>
@@ -143,13 +143,87 @@
         </ul>
     </div>
 
-    
-      
-
-
     <div id="map"></div>
 
-    <!-- Toast container -->
+    <!-- ------------------------ -->
+    <!-- Respuestas del Offcanvas -->
+    <!-- ------------------------ -->
+
+    <!-- Respuestas del Offcanvas 'Como usar?' -->
+    <div class="offcanvas offcanvas-end how-to" style="top: 80px; width: 450px; z-index: 999; font-family: 'Montserrat', sans-serif;" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-how-to" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">¿Cómo usar el visor?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <p id="offcanvasBodyContent">Contenido del mensaje ¿Cómo usar?.</p>
+        </div>
+    </div>
+    <!-- Respuestas del Offcanvas '¿Quienes somos?' -->
+    <div class="offcanvas offcanvas-end who" style="top: 80px; width: 450px; z-index: 999; font-family: 'Montserrat', sans-serif;" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-who" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">¿Quienes somos?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <p id="offcanvasBodyContent">Contenido del mensaje ¿Quienes somos?</p>
+        </div>
+    </div>
+    <!-- Respuestas del Offcanvas 'Información importante' -->
+    <div class="offcanvas offcanvas-end important" style="top: 80px; width: 450px; z-index: 999; font-family: 'Montserrat', sans-serif;" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-important" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Información importante</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <p id="offcanvasBodyContent">Contenido del mensaje Información importante</p>
+            
+        </div>
+    </div>
+    <!-- Respuestas del Offcanvas capa de DistritoQRO -->
+    <div class="offcanvas offcanvas-end dqro" style="top: 80px; width: 450px; z-index: 999; font-family: 'Montserrat', sans-serif;" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-dqro" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Mapa: Distrito QRO</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <p id="offcanvasBodyContent">Contenido sobre distrito qro</p>
+        </div>
+    </div>
+    <!-- Respuestas del Offcanvas capa de ANPs -->
+    <div class="offcanvas offcanvas-end anp" style="top: 80px; width: 450px; z-index: 999; font-family: 'Montserrat', sans-serif;" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-anp" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Mapa:  Áreas Naturales Protegidas</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <p id="offcanvasBodyContent">Contenido sobre Áreas Naturales Protegidas</p>
+        </div>
+    </div>
+    <!-- Respuestas del Offcanvas capa de POEL -->
+    <div class="offcanvas offcanvas-end poel" style="top: 80px; width: 450px; z-index: 999; font-family: 'Montserrat', sans-serif;" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-poel" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Mapa: POEL</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <p id="offcanvasBodyContent">Contenido sobre el Programa de Ordenamiento Ecológico Local</p>
+        </div>
+    </div>
+    <!-- Respuestas del Offcanvas capa de POEREQ -->
+    <div class="offcanvas offcanvas-end poereq" style="top: 80px; width: 450px; z-index: 999; font-family: 'Montserrat', sans-serif;" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-poereq" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Mapa: POEREQ</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <p id="offcanvasBodyContent">Contenido sobre el Programa de Ordenamiento Ecológico Regional del Estado de Querétaro</p>
+        </div>
+    </div>
+    <!-- ------------------------ -->
+    <!-- Contenedor del toast de ! -->
+    <!-- ------------------------ -->
+
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <!-- Toast para "Coloca un pin" -->
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -177,6 +251,8 @@
             </div>
         </div>
     </div>
+
+
 
     <!-- Bootstrap JS y dependencias -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

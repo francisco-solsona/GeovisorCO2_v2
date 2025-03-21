@@ -4,7 +4,7 @@ const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/satellite-v9',
     projection: 'globe',
-    zoom: 13, // Nivel de zoom inicial
+    zoom: 12, // Nivel de zoom inicial
     maxBounds: [
         [-100.66596, 20.37553], 
         [-100.13981, 20.86796]
@@ -44,10 +44,12 @@ geocoder.on('clear', () => {
 
 map.on('style.load', () => {
     map.setFog({});
-    // Cargar las capas
+
     loadGeoTIFF().then(() => {
+        // Luego cargar la capa de catastro
         addCustomLayers();
     });
+    
 });
 
 ////////////////////////////////////////////////////////////////////////////
@@ -67,6 +69,8 @@ const globalPOELLayer = 'C22014_POEL_2014-2h0ocl';
 const globalDQROUrl = 'mapbox://paco-solsona.9k5b84q3';
 const globalDQROLayer = 'C22014_DISTRITO_QRO_2024-7j1h8u';
 
+let activeLayer = null; // Variable global para almacenar la capa activa
+
 ////////////////////////////////////////////
 /////// CARGAMOS LAS CAPAS A UTILIZAR //////
 ////////////////////////////////////////////
@@ -74,11 +78,49 @@ const globalDQROLayer = 'C22014_DISTRITO_QRO_2024-7j1h8u';
 // Función para volver a cargar la capa personalizada
 function addCustomLayers() {
 
+    map.addSource('mapbox-dem', {
+        "type": "raster-dem",
+        "url": "mapbox://mapbox.terrain-rgb", 
+        "tileSize": 512,
+        "maxzoom": 14
+    });
+
+    // Configurar el terreno en el mapa
+    map.setTerrain({ "source": "mapbox-dem", "exaggeration": 2.5 });
+
+    // Agregar sombras de relieve para mejorar la visualización
+    map.setFog({
+        "range": [0.5, 10], // Distancia de la niebla
+        "horizon-blend": 0.2, // Suavidad en el horizonte
+        "color": "#d4d4d4",
+        "high-color": "#ffffff",
+        "space-color": "#000000"
+    });
+
+    
+
     // Primero vamos a llamar todos los sources
     if (!map.getSource('anp')) {
         map.addSource('anp', {
             type: 'vector',
             url: globalANPUrl 
+        });
+    }
+    
+    if (!map.getLayer('anp-fill-layer')) {
+        map.addLayer({
+            'id': 'anp-fill-layer',
+            'type': 'fill',  
+            'source': 'anp',  
+            'source-layer': globalANPLayer, 
+            'slot': 'bottom',
+            'paint': {
+                'fill-color': '#000000', // Color de relleno (puede ser cualquiera)
+                'fill-opacity': 0.3 // Relleno 100% transparente
+            },
+            'layout': {
+                'visibility': 'none' // Visible al inicio
+            }
         });
     }
     if (!map.getLayer('anp-line-layer')) {
@@ -93,25 +135,10 @@ function addCustomLayers() {
             'paint': {
                 'line-color': '#000000',  
                 'line-width': 2,  
-                'line-opacity': 0.7  
+                'line-opacity': 1
             },
             'layout': {
                 'visibility': 'none' // Invisible al inicio
-            }
-        });
-    }
-    if (!map.getLayer('anp-fill-layer')) {
-        map.addLayer({
-            'id': 'anp-fill-layer',
-            'type': 'fill',  
-            'source': 'anp',  
-            'source-layer': globalANPLayer, 
-            'paint': {
-                'fill-color': '#000000', // Color de relleno (puede ser cualquiera)
-                'fill-opacity': 0 // Relleno 100% transparente
-            },
-            'layout': {
-                'visibility': 'none' // Visible al inicio
             }
         });
     }
@@ -122,6 +149,22 @@ function addCustomLayers() {
         map.addSource('poereq', {
             type: 'vector',
             url: globalPOEREQUrl 
+        });
+    }
+    
+    if (!map.getLayer('poereq-fill-layer')) {
+        map.addLayer({
+            'id': 'poereq-fill-layer',
+            'type': 'fill',  
+            'source': 'poereq',  
+            'source-layer': globalPOEREQLayer, 
+            'paint': {
+                'fill-color': '#000000', // Color de relleno (puede ser cualquiera)
+                'fill-opacity': 0.3 // Relleno 100% transparente
+            },
+            'layout': {
+                'visibility': 'none' // Visible al inicio
+            }
         });
     }
     if (!map.getLayer('poereq-line-layer')) {
@@ -136,25 +179,10 @@ function addCustomLayers() {
             'paint': {
                 'line-color': '#000000',  
                 'line-width': 2,  
-                'line-opacity': 0.7  
+                'line-opacity': 1
             },
             'layout': {
                 'visibility': 'none' // Invisible al inicio
-            }
-        });
-    }
-    if (!map.getLayer('poereq-fill-layer')) {
-        map.addLayer({
-            'id': 'poereq-fill-layer',
-            'type': 'fill',  
-            'source': 'poereq',  
-            'source-layer': globalPOEREQLayer, 
-            'paint': {
-                'fill-color': '#000000', // Color de relleno (puede ser cualquiera)
-                'fill-opacity': 0 // Relleno 100% transparente
-            },
-            'layout': {
-                'visibility': 'none' // Visible al inicio
             }
         });
     }
@@ -165,6 +193,22 @@ function addCustomLayers() {
         map.addSource('poel', {
             type: 'vector',
             url: globalPOELUrl 
+        });
+    }
+    
+    if (!map.getLayer('poel-fill-layer')) {
+        map.addLayer({
+            'id': 'poel-fill-layer',
+            'type': 'fill',  
+            'source': 'poel',  
+            'source-layer': globalPOELLayer, 
+            'paint': {
+                'fill-color': '#000000', // Color de relleno (puede ser cualquiera)
+                'fill-opacity': 0.3 // Relleno 100% transparente
+            },
+            'layout': {
+                'visibility': 'none' // Visible al inicio
+            }
         });
     }
     if (!map.getLayer('poel-line-layer')) {
@@ -179,25 +223,10 @@ function addCustomLayers() {
             'paint': {
                 'line-color': '#000000',  
                 'line-width': 2, 
-                'line-opacity': 0.7  
+                'line-opacity': 1 
             },
             'layout': {
                 'visibility': 'none' // Invisible al inicio
-            }
-        });
-    }
-    if (!map.getLayer('poel-fill-layer')) {
-        map.addLayer({
-            'id': 'poel-fill-layer',
-            'type': 'fill',  
-            'source': 'poel',  
-            'source-layer': globalPOELLayer, 
-            'paint': {
-                'fill-color': '#000000', // Color de relleno (puede ser cualquiera)
-                'fill-opacity': 0 // Relleno 100% transparente
-            },
-            'layout': {
-                'visibility': 'none' // Visible al inicio
             }
         });
     }
@@ -208,6 +237,22 @@ function addCustomLayers() {
         map.addSource('dqro', {
             type: 'vector',
             url: globalDQROUrl 
+        });
+    }
+    
+    if (!map.getLayer('dqro-fill-layer')) {
+        map.addLayer({
+            'id': 'dqro-fill-layer',
+            'type': 'fill',  
+            'source': 'dqro',  
+            'source-layer': globalDQROLayer, 
+            'paint': {
+                'fill-color': '#000000', // Color de relleno (puede ser cualquiera)
+                'fill-opacity': 0.3 // Relleno 100% transparente
+            },
+            'layout': {
+                'visibility': 'none' // Visible al inicio
+            }
         });
     }
     if (!map.getLayer('dqro-line-layer')) {
@@ -222,25 +267,10 @@ function addCustomLayers() {
             'paint': {
                 'line-color': '#000000',  
                 'line-width': 2, 
-                'line-opacity': 0.7  
+                'line-opacity': 1
             },
             'layout': {
                 'visibility': 'none' // Invisible al inicio
-            }
-        });
-    }
-    if (!map.getLayer('dqro-fill-layer')) {
-        map.addLayer({
-            'id': 'dqro-fill-layer',
-            'type': 'fill',  
-            'source': 'dqro',  
-            'source-layer': globalDQROLayer, 
-            'paint': {
-                'fill-color': '#000000', // Color de relleno (puede ser cualquiera)
-                'fill-opacity': 0 // Relleno 100% transparente
-            },
-            'layout': {
-                'visibility': 'none' // Visible al inicio
             }
         });
     }
@@ -363,6 +393,76 @@ async function loadGeoTIFF() {
         console.error("Error al cargar la capa .tif:", error);
     }
 }
+ 
+// Evento de clic en el mapa
+map.on('click', (e) => {
+    console.log('Coordenadas del clic:', e.lngLat);
+
+    // Verificar si hay una capa activa
+    if (!activeLayer) {
+        console.log('No hay ninguna capa activa.');
+        return;
+    }
+
+    // Determinar las capas fill-layer correspondientes a la capa activa
+    let activeLayers = [];
+    if (activeLayer === 'anp') {
+        activeLayers = ['anp-fill-layer'];
+    } else if (activeLayer === 'poereq') {
+        activeLayers = ['poereq-fill-layer'];
+    } else if (activeLayer === 'poel') {
+        activeLayers = ['poel-fill-layer'];
+    } else if (activeLayer === 'dqro') {
+        activeLayers = ['dqro-fill-layer'];
+    }
+
+    console.log('Capas activas:', activeLayers);
+
+    // Buscar features en las capas activas
+    const clickedFeatures = map.queryRenderedFeatures(e.point, {
+        layers: activeLayers
+    });
+    console.log('Features detectadas:', clickedFeatures);
+
+    // Si se hizo clic en una feature de la capa activa, mostrar un popup con los atributos
+    if (clickedFeatures.length > 0) {
+        const properties = clickedFeatures[0].properties;
+        const layerId = clickedFeatures[0].layer.id; // Obtener el ID de la capa
+        const coordinates = e.lngLat;
+
+        let popupContent = '<h3>Atributos</h3>';
+        const layerAttributes = attributeNames[layerId.replace('-fill-layer', '-table')] || {};
+
+        // Recorrer los atributos en el orden definido en el JSON
+        for (const [key, value] of Object.entries(layerAttributes)) {
+            if (value !== null) { // Omitir atributos con valor null
+                const attributeValue = properties[key];
+                if (attributeValue !== undefined && attributeValue !== null) {
+                    // Formatear atributos específicos
+                    let displayValue = attributeValue;
+                    if (
+                        key === 'AREA' || key === 'AREA_HA' || key === 'HECTARES' || // Superficie (ha)
+                        key === 'SUM' || // Total de CO₂ almacenado en el suelo (ton)
+                        key === 'MEAN_HA' // Promedio CO₂ en el suelo (ton/ha)
+                    ) {
+                        displayValue = formatNumber(parseFloat(attributeValue));
+                    }
+                    popupContent += `<p><strong>${value}</strong>: ${displayValue}</p>`;
+                }
+            }
+        }
+
+        console.log('Contenido del popup:', popupContent);
+
+        
+        new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML(popupContent)
+            .addTo(map);
+    } else {
+        console.log('No se detectaron features en el clic.');
+    }
+});
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -518,152 +618,44 @@ function formatNumber(value) {
     return value; // Devolver el valor original si no es un número
 }
 
+
+// Variable global para rastrear la capa activa de fill-layer
+let activeFillLayer = null;
+
+// Función para cambiar la visibilidad de una capa
 function toggleLayer(layerId, isVisible) {
-    // Lista de todas las capas disponibles
-    const allLayers = ['anp-line-layer', 'anp-fill-layer', 'poereq-line-layer', 'poereq-fill-layer', 'poel-line-layer', 'poel-fill-layer', 'dqro-line-layer', 'dqro-fill-layer'];
-
-    // Desactivar todas las capas primero
-    allLayers.forEach(layer => {
-        map.setLayoutProperty(layer, 'visibility', 'none');
-        document.querySelector(`[data-layer="${layer.replace('-line-layer', '')}"]`)?.classList.remove('active');
-    });
-
-    // Si se proporciona un valor explícito para isVisible, úsalo
-    if (isVisible !== undefined) {
+    if (map.getLayer(layerId)) {
         map.setLayoutProperty(layerId, 'visibility', isVisible ? 'visible' : 'none');
-        document.querySelector(`[data-layer="${layerId.replace('-line-layer', '')}"]`)?.classList.toggle('active', isVisible);
-    } else {
-        // Si no se proporciona, alterna la visibilidad
-        const visibility = map.getLayoutProperty(layerId, 'visibility');
-        if (visibility === 'visible') {
-            map.setLayoutProperty(layerId, 'visibility', 'none');
-            document.querySelector(`[data-layer="${layerId.replace('-line-layer', '')}"]`)?.classList.remove('active');
-        } else {
-            map.setLayoutProperty(layerId, 'visibility', 'visible');
-            document.querySelector(`[data-layer="${layerId.replace('-line-layer', '')}"]`)?.classList.add('active');
-        }
     }
 }
+
+// Lista de todas las capas
+const allLayers = [
+    'anp-fill-layer', 'anp-line-layer',
+    'poereq-fill-layer', 'poereq-line-layer',
+    'poel-fill-layer', 'poel-line-layer',
+    'dqro-fill-layer', 'dqro-line-layer'
+];
 
 // Selecciona todos los elementos de la lista con el atributo data-layer
 const layerButtons = document.querySelectorAll('.btn-toggle-nav [data-layer]');
 
-// Asigna eventos de clic a los botones
 layerButtons.forEach(button => {
     button.addEventListener('click', function () {
-        const layerId = this.getAttribute('data-layer'); // Obtiene el valor de data-layer
-        toggleLayer(`${layerId}-line-layer`); // Alterna la capa correspondiente
-        console.log('Botones encontrados:', layerId);
+        activeLayer = this.getAttribute('data-layer');
+        const layerId = this.getAttribute('data-layer');
+
+        // Apagar todas las capas antes de activar la nueva
+        allLayers.forEach(layer => toggleLayer(layer, false));
+
+        // Activar solo la capa seleccionada
+        toggleLayer(`${layerId}-fill-layer`, true);
+        toggleLayer(`${layerId}-line-layer`, true);
+
+        
     });
 });
 
-// Event listener para el dropdown
-document.getElementById('layer-select').addEventListener('click', function (e) {
-    const selectedLayer = e.target.value;
-
-    console.log('Botones encontrados:', selectedLayer);
-    // Desactivar todas las capas primero
-    toggleLayer('anp-line-layer', false);
-    toggleLayer('anp-fill-layer', false);
-    toggleLayer('poereq-line-layer', false);
-    toggleLayer('poereq-fill-layer', false);
-    toggleLayer('poel-line-layer', false);
-    toggleLayer('poel-fill-layer', false);
-    toggleLayer('dqro-line-layer', false);
-    toggleLayer('dqro-fill-layer', false);
-
-    // Activar la capa seleccionada
-    if (selectedLayer === 'anp') {
-        toggleLayer('anp-line-layer', true);
-        toggleLayer('anp-fill-layer', true);
-    } else if (selectedLayer === 'poereq') {
-        toggleLayer('poereq-line-layer', true);
-        toggleLayer('poereq-fill-layer', true);
-    } else if (selectedLayer === 'poel') {
-        toggleLayer('poel-line-layer', true);
-        toggleLayer('poel-fill-layer', true);
-    } else if (selectedLayer === 'dqro') {
-        toggleLayer('dqro-line-layer', true);
-        toggleLayer('dqro-fill-layer', true);
-    }
-
-    console.log('Botones encontrados:', selectedLayer);
-});
-
-
-// Evento para manejar la selección de capas desde el dropdown
-document.getElementById('layer-select').addEventListener('change', function (e) {
-    activeLayer = e.target.value; // Actualiza la capa activa
-    console.log('Capa activa seleccionada desde el dropdown:', activeLayer);
-});
 
 
 
-// map.on('click', (e) => {
-//     console.log('Coordenadas del clic:', e.lngLat);
-
-//     // Verificar si hay una capa activa
-//     if (!activeLayer) {
-//         console.log('No hay ninguna capa activa.');
-//         return;
-//     }
-
-//     // Determinar las capas fill-layer correspondientes a la capa activa
-//     let activeLayers = [];
-//     if (activeLayer === 'anp') {
-//         activeLayers = ['anp-fill-layer'];
-//     } else if (activeLayer === 'poereq') {
-//         activeLayers = ['poereq-fill-layer'];
-//     } else if (activeLayer === 'poel') {
-//         activeLayers = ['poel-fill-layer'];
-//     } else if (activeLayer === 'dqro') {
-//         activeLayers = ['dqro-fill-layer'];
-//     }
-
-//     console.log('Capas activas:', activeLayers);
-//     console.log('Coordenadas del clic:', e.point);
-
-//     // Buscar features en las capas activas
-//     const clickedFeatures = map.queryRenderedFeatures(e.point, {
-//         layers: activeLayers
-//     });
-//     console.log('Features detectadas:', clickedFeatures);
-
-//     // Si se hizo clic en una feature de la capa activa, mostrar un popup con los atributos
-//     if (clickedFeatures.length > 0) {
-//         const properties = clickedFeatures[0].properties;
-//         const layerId = clickedFeatures[0].layer.id; // Obtener el ID de la capa
-//         const coordinates = e.lngLat;
-
-//         let popupContent = '<h3>Atributos</h3>';
-//         const layerAttributes = attributeNames[layerId.replace('-fill-layer', '-table')] || {};
-
-//         // Recorrer los atributos en el orden definido en el JSON
-//         for (const [key, value] of Object.entries(layerAttributes)) {
-//             if (value !== null) { // Omitir atributos con valor null
-//                 const attributeValue = properties[key];
-//                 if (attributeValue !== undefined && attributeValue !== null) {
-//                     // Formatear atributos específicos
-//                     let displayValue = attributeValue;
-//                     if (
-//                         key === 'AREA' || key === 'AREA_HA' || key === 'HECTARES' || // Superficie (ha)
-//                         key === 'SUM' || // Total de CO₂ almacenado en el suelo (ton)
-//                         key === 'MEAN_HA' // Promedio CO₂ en el suelo (ton/ha)
-//                     ) {
-//                         displayValue = formatNumber(parseFloat(attributeValue));
-//                     }
-//                     popupContent += `<p><strong>${value}</strong>: ${displayValue}</p>`;
-//                 }
-//             }
-//         }
-
-//         console.log('Contenido del popup:', popupContent);
-
-//         new mapboxgl.Popup()
-//             .setLngLat(coordinates)
-//             .setHTML(popupContent)
-//             .addTo(map);
-//     } else {
-//         console.log('No se detectaron features en el clic.');
-//     }
-// });
